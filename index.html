@@ -2,20 +2,156 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sorteo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorteo Kawasaki Ninja 500</title>
   <link rel="stylesheet" href="style/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f8f8;
+    }
+    header {
+      background: #000;
+      color: #fff;
+      padding: 2rem;
+      text-align: center;
+    }
+    section {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    .premios {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .premio {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 1rem;
+      text-align: center;
+      width: 260px;
+    }
+    .premio img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+    .numeros {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .numero {
+      width: 50px;
+      height: 50px;
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .numero:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+    .btn-flotante {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25d366;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: #eee;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>¡Participá del Sorteo!</h1>
-    <form id="sorteo-form">
-      <input type="text" id="nombre" placeholder="Tu nombre" required />
-      <input type="email" id="email" placeholder="Tu email" required />
-      <button type="submit">Participar</button>
-    </form>
-    <p id="mensaje"></p>
-  </div>
-  <script src="script/script.js"></script>
+
+  <header>
+    <h1>¡Participá y ganá una moto, un celular o un casco por solo 100 USD!</h1>
+  </header>
+
+  <section>
+    <h2>Premios</h2>
+    <div class="premios">
+      <div class="premio">
+        <img src="assets/ninja500.webp" alt="Moto Kawasaki Ninja 500" />
+        <h3>Moto Kawasaki Ninja 500</h3>
+        <p>Modelo 2025, 0 km. Valor: 10.000 USD</p>
+      </div>
+      <div class="premio">
+        <img src="assets/iphone15pro.webp" alt="iPhone 15 Pro" />
+        <h3>iPhone 15 Pro</h3>
+        <p>Nuevo, sellado. Valor: 1.500 USD</p>
+      </div>
+      <div class="premio">
+        <img src="assets/cascohjc.webp" alt="Casco HJC RPHA" />
+        <h3>Casco HJC RPHA Negro Mate</h3>
+        <p>Valor: 1.000 USD</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Elegí tu número</h2>
+    <p>El sorteo se realiza al venderse todos los tickets. Cada ticket cuesta 100 USD.</p>
+    <div class="numeros" id="numeros-container"></div>
+  </section>
+
+  <footer>
+    <h3>Términos y condiciones</h3>
+    <p>[Espacio reservado para términos y condiciones. Aquí se detallará cómo se realiza el sorteo, derechos, devoluciones, reemplazos en efectivo, etc.]</p>
+  </footer>
+
+  <a class="btn-flotante" href="https://wa.me/59895848993?text=Hola%2C%20tengo%20una%20consulta%20sobre%20el%20sorteo" target="_blank">💬</a>
+
+  <script>
+    const container = document.getElementById("numeros-container");
+    const totalNumeros = 250;
+    const whatsappBase = "https://wa.me/59895848993?text=Hola%2C%20quiero%20comprar%20el%20n%C3%BAmero%20";
+
+    const vendidos = [5, 12, 44]; // Agregá acá los números vendidos
+
+    for (let i = 1; i <= totalNumeros; i++) {
+      const btn = document.createElement("button");
+      btn.className = "numero";
+      const numStr = String(i).padStart(3, '0');
+      btn.textContent = numStr;
+
+      if (vendidos.includes(i)) {
+        btn.disabled = true;
+      } else {
+        btn.onclick = () => {
+          window.open(whatsappBase + numStr, '_blank');
+        };
+      }
+
+      container.appendChild(btn);
+    }
+  </script>
+
 </body>
 </html>
