@@ -10,10 +10,11 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: #f8f8f8;
+      background: #000;
+      color: #fff;
     }
     header {
-      background: #000;
+      background: #111;
       color: #fff;
       padding: 2rem;
       text-align: center;
@@ -30,9 +31,9 @@
       justify-content: center;
     }
     .premio {
-      background: #fff;
+      background: #222;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
       padding: 1rem;
       text-align: center;
       width: 260px;
@@ -42,8 +43,19 @@
       height: auto;
       border-radius: 6px;
     }
+    .btn-comprar {
+      background: #27ae60;
+      color: #fff;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: block;
+      margin: 2rem auto;
+    }
     .numeros {
-      display: flex;
+      display: none;
       flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
@@ -60,7 +72,7 @@
       cursor: pointer;
     }
     .numero:disabled {
-      background: #aaa;
+      background: #555;
       cursor: not-allowed;
     }
     .btn-flotante {
@@ -83,8 +95,9 @@
     footer {
       margin-top: 4rem;
       padding: 2rem;
-      background: #eee;
+      background: #111;
       text-align: center;
+      color: #ccc;
     }
   </style>
 </head>
@@ -100,7 +113,7 @@
       <div class="premio">
         <img src="assets/ninja500.webp" alt="Moto Kawasaki Ninja 500" />
         <h3>Moto Kawasaki Ninja 500</h3>
-        <p>Modelo 2025, 0 km. Valor: 10.000 USD</p>
+        <p>Modelo 2025, 0 km. Valor: 10.000 USD</p>
       </div>
       <div class="premio">
         <img src="assets/iphone15pro.webp" alt="iPhone 15 Pro" />
@@ -118,6 +131,7 @@
   <section>
     <h2>Elegí tu número</h2>
     <p>El sorteo se realiza al venderse todos los tickets. Cada ticket cuesta 100 USD.</p>
+    <button class="btn-comprar" onclick="mostrarNumeros()">Comprar Ticket</button>
     <div class="numeros" id="numeros-container"></div>
   </section>
 
@@ -129,27 +143,32 @@
   <a class="btn-flotante" href="https://wa.me/59895848993?text=Hola%2C%20tengo%20una%20consulta%20sobre%20el%20sorteo" target="_blank">💬</a>
 
   <script>
-    const container = document.getElementById("numeros-container");
-    const totalNumeros = 250;
-    const whatsappBase = "https://wa.me/59895848993?text=Hola%2C%20quiero%20comprar%20el%20n%C3%BAmero%20";
+    function mostrarNumeros() {
+      const numerosDiv = document.getElementById("numeros-container");
+      if (numerosDiv.innerHTML === "") {
+        const totalNumeros = 250;
+        const whatsappBase = "https://wa.me/59895848993?text=Hola%2C%20quiero%20comprar%20el%20n%C3%BAmero%20";
+        const vendidos = [5, 12, 44]; // agregá acá los que estén vendidos
 
-    const vendidos = [5, 12, 44]; // Agregá acá los números vendidos
+        for (let i = 1; i <= totalNumeros; i++) {
+          const btn = document.createElement("button");
+          btn.className = "numero";
+          const numStr = String(i).padStart(3, '0');
+          btn.textContent = numStr;
 
-    for (let i = 1; i <= totalNumeros; i++) {
-      const btn = document.createElement("button");
-      btn.className = "numero";
-      const numStr = String(i).padStart(3, '0');
-      btn.textContent = numStr;
+          if (vendidos.includes(i)) {
+            btn.disabled = true;
+          } else {
+            btn.onclick = () => {
+              window.open(whatsappBase + numStr, '_blank');
+            };
+          }
 
-      if (vendidos.includes(i)) {
-        btn.disabled = true;
-      } else {
-        btn.onclick = () => {
-          window.open(whatsappBase + numStr, '_blank');
-        };
+          numerosDiv.appendChild(btn);
+        }
       }
 
-      container.appendChild(btn);
+      numerosDiv.style.display = "flex";
     }
   </script>
 
