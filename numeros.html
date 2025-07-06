@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elegí tu número - Sorteo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    .numeros {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .numero {
+      width: 50px;
+      height: 50px;
+      background: #27ae60;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .numero:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+    form {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 400px;
+      margin: 0 auto;
+      margin-top: 2rem;
+    }
+    input, button {
+      padding: 0.8rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    input {
+      background: #222;
+      color: #fff;
+    }
+    button[type="submit"] {
+      background: #27ae60;
+      color: #fff;
+      cursor: pointer;
+    }
+    .gracias {
+      display: none;
+      font-size: 1.2rem;
+      color: #0f0;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Elegí tu número</h1>
+  <div id="numeros-container" class="numeros"></div>
+
+  <form id="formulario">
+    <input type="text" name="Nombre" placeholder="Nombre completo" required />
+    <input type="tel" name="Celular" placeholder="Número de contacto" required />
+    <input type="email" name="Email" placeholder="Email" required />
+    <input type="hidden" name="Número" id="numeroSeleccionado" />
+    <button type="submit">Confirmar y pagar</button>
+  </form>
+
+  <div class="gracias" id="mensajeGracias">
+    ✅ ¡Gracias por tu compra! Nos contactaremos pronto.
+  </div>
+
+  <script>
+    const API_URL = "https://sheetdb.io/api/v1/mqd28qyy5ilw2";
+
+    async function obtenerNumerosVendidos() {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      return data.map(e => e["Número"]);
+    }
+
+    function seleccionarNumero(numStr) {
+      document.getElementById("numeroSeleccionado").value = numStr;
+      document.getElementById("formulario").style.display = "flex";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    async function cargarNumeros() {
+      const vendidos = await obtenerNumerosVendidos();
+      const numerosDiv = document.getElementById("numeros-container");
+
+      for (let i = 1; i <= 250; i++) {
+        const numStr = String(i).padStart(3, '0');
+        const btn = document.createElement("button");
+        btn.className = "numero";
+        btn.textContent = numStr;
+
+        if (vendidos.includes(numStr)) {
+          btn.disabled = true;
+        } else {
+          btn.onclick = () => seleccionarNumero(numStr);
+        }
+
+        numerosDiv.appendChild(btn);
+      }
+    }
+
+    document.getElementById("formulario").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const data = {
+        Timestamp: new Date().toISOString(),
+        Nombre: form.Nombre.value,
+        Celular: form.Celular.value,
+        Email: form.Email.value,
+        Número: form.Número.value,
+      };
+
+      await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data }),
+      });
+
+      // Redirigir al link de pago personalizado por número
+      const pagoURL = `https://mpago.la/${data["Número"]}`; // <-- Reemplazar por links REALES
+      window.open(pagoURL, "_blank");
+
+      // Mostrar mensaje de agradecimiento
+      form.reset();
+      form.style.display = "none";
+      document.getElementById("mensajeGracias").style.display = "block";
+    });
+
+    cargarNumeros();
+  </script>
+
+</body>
+</html>
