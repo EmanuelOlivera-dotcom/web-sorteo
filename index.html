@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sorteo Kawasaki Ninja 500</title>
-  <link rel="stylesheet" href="style/style.css" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -16,19 +18,21 @@
     header {
       background: #111;
       color: #fff;
-      padding: 2rem;
+      padding: 2rem 1rem;
       text-align: center;
     }
-    section {
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
     }
     .premios {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 2rem;
-      justify-content: center;
+      width: 100%;
+      max-width: 800px;
     }
     .premio {
       background: #222;
@@ -36,7 +40,6 @@
       box-shadow: 0 0 10px rgba(255,255,255,0.1);
       padding: 1rem;
       text-align: center;
-      width: 260px;
     }
     .premio img {
       max-width: 100%;
@@ -51,8 +54,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      display: block;
-      margin: 2rem auto;
+      margin-top: 2rem;
     }
     .numeros {
       display: none;
@@ -60,6 +62,7 @@
       gap: 10px;
       justify-content: center;
       margin-top: 2rem;
+      max-width: 800px;
     }
     .numero {
       width: 50px;
@@ -74,6 +77,14 @@
     .numero:disabled {
       background: #555;
       cursor: not-allowed;
+    }
+    footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: #111;
+      text-align: center;
+      color: #ccc;
+      width: 100%;
     }
     .btn-flotante {
       position: fixed;
@@ -92,12 +103,11 @@
       text-decoration: none;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
-    footer {
-      margin-top: 4rem;
-      padding: 2rem;
-      background: #111;
-      text-align: center;
-      color: #ccc;
+    @media (min-width: 700px) {
+      .premios {
+        flex-direction: row;
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -107,9 +117,8 @@
     <h1>¡Participá y ganá una moto, un celular o un casco por solo 100 USD!</h1>
   </header>
 
-  <section>
-    <h2>Premios</h2>
-    <div class="premios">
+  <main>
+    <section class="premios">
       <div class="premio">
         <img src="assets/ninja500.webp" alt="Moto Kawasaki Ninja 500" />
         <h3>Moto Kawasaki Ninja 500</h3>
@@ -125,15 +134,11 @@
         <h3>Casco HJC RPHA Negro Mate</h3>
         <p>Valor: 1.000 USD</p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section>
-    <h2>Elegí tu número</h2>
-    <p>El sorteo se realiza al venderse todos los tickets. Cada ticket cuesta 100 USD.</p>
     <button class="btn-comprar" onclick="mostrarNumeros()">Comprar Ticket</button>
     <div class="numeros" id="numeros-container"></div>
-  </section>
+  </main>
 
   <footer>
     <h3>Términos y condiciones</h3>
@@ -148,7 +153,7 @@
       if (numerosDiv.innerHTML === "") {
         const totalNumeros = 250;
         const whatsappBase = "https://wa.me/59895848993?text=Hola%2C%20quiero%20comprar%20el%20n%C3%BAmero%20";
-        const vendidos = [5, 12, 44]; // números ya vendidos
+        const vendidos = [5, 12, 44]; // Editar esta lista según los vendidos
 
         for (let i = 1; i <= totalNumeros; i++) {
           const btn = document.createElement("button");
