@@ -67,6 +67,7 @@
       margin-top: 2rem;
     }
     #mp-button {
+      display: none;
       margin-top: 2rem;
     }
   </style>
@@ -84,7 +85,7 @@
     <button type="submit">Confirmar reserva</button>
   </form>
 
-  <div id="mp-button" style="display: none;"></div>
+  <div id="mp-button"></div>
 
   <div class="gracias" id="mensajeGracias">
     ✅ ¡Gracias! Ya podés completar el pago abajo 👇
@@ -148,16 +149,17 @@
       form.reset();
       form.style.display = "none";
       document.getElementById("mensajeGracias").style.display = "block";
-      document.getElementById("mp-button").style.display = "block";
 
-      // Insertar botón de Mercado Pago (el tuyo)
       const mpDiv = document.getElementById("mp-button");
-      mpDiv.innerHTML = `
-        <script src="https://www.mercadopago.com.uy/integrations/v1/web-payment-checkout.js"
-          data-preference-id="556143758-d1b44109-0817-4868-b8c7-1c6527ac5fe7"
-          data-source="button">
-        </script>
-      `;
+      mpDiv.style.display = "block";
+      mpDiv.innerHTML = "";
+
+      // Crear y agregar el script de Mercado Pago
+      const mpScript = document.createElement("script");
+      mpScript.src = "https://www.mercadopago.com.uy/integrations/v1/web-payment-checkout.js";
+      mpScript.setAttribute("data-preference-id", "556143758-d1b44109-0817-4868-b8c7-1c6527ac5fe7");
+      mpScript.setAttribute("data-source", "button");
+      mpDiv.appendChild(mpScript);
     });
 
     cargarNumeros();
@@ -165,3 +167,4 @@
 
 </body>
 </html>
+
