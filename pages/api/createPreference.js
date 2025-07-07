@@ -1,5 +1,3 @@
-// createPreference.js
-
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
@@ -36,7 +34,7 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer TU_ACCESS_TOKEN_PRIVADO`,
+        Authorization: `Bearer TEST-1789276759478763-070714-d7d2ab9fc332ceb133a5831a2d2b6fde-556143758`,
       },
       body: JSON.stringify(preference),
     });
