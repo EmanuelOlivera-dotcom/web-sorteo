@@ -55,28 +55,7 @@
       border-radius: 6px;
       cursor: pointer;
       margin-top: 2rem;
-    }
-    .numeros {
-      display: none;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 2rem;
-      max-width: 800px;
-    }
-    .numero {
-      width: 50px;
-      height: 50px;
-      background: #27ae60;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .numero:disabled {
-      background: #555;
-      cursor: not-allowed;
+      text-decoration: none;
     }
     footer {
       margin-top: 4rem;
@@ -87,7 +66,7 @@
       width: 100%;
     }
     footer h3, footer p {
-      background: transparent; /* Asegura que ningún texto tenga fondo gris */
+      background: transparent;
       margin: 0.5rem 0;
     }
     .btn-flotante {
@@ -134,14 +113,13 @@
         <p>Nuevo, sellado. Valor: 1.500 USD</p>
       </div>
       <div class="premio">
-        <img src="assets/casco.png" alt="Casco HJC RPHA" />
+        <img src="assets/casco.png" alt="Casco HJC RPHA Negro Mate" />
         <h3>Casco HJC RPHA Negro Mate</h3>
         <p>Valor: 1.000 USD</p>
       </div>
     </section>
 
-    <button class="btn-comprar" onclick="mostrarNumeros()">Comprar Ticket</button>
-    <div class="numeros" id="numeros-container"></div>
+    <a href="numeros.html" class="btn-comprar">Comprar Ticket</a>
   </main>
 
   <footer>
@@ -151,36 +129,5 @@
 
   <a class="btn-flotante" href="https://wa.me/59895848993?text=Hola%2C%20tengo%20una%20consulta%20sobre%20el%20sorteo" target="_blank">💬</a>
 
-  <script>
-    function mostrarNumeros() {
-      const numerosDiv = document.getElementById("numeros-container");
-      if (numerosDiv.innerHTML === "") {
-        const totalNumeros = 250;
-        const whatsappBase = "https://wa.me/59895848993?text=Hola%2C%20quiero%20comprar%20el%20n%C3%BAmero%20";
-        const vendidos = [5, 12, 44]; // Editar esta lista según los vendidos
-
-        for (let i = 1; i <= totalNumeros; i++) {
-          const btn = document.createElement("button");
-          btn.className = "numero";
-          const numStr = String(i).padStart(3, '0');
-          btn.textContent = numStr;
-
-          if (vendidos.includes(i)) {
-            btn.disabled = true;
-          } else {
-            btn.onclick = () => {
-              window.open(whatsappBase + numStr, '_blank');
-            };
-          }
-
-          numerosDiv.appendChild(btn);
-        }
-      }
-
-      numerosDiv.style.display = "flex";
-    }
-  </script>
-
 </body>
 </html>
-
