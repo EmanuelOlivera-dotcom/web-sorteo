@@ -1,9 +1,6 @@
-// app/api/createPreference/route.js
-
-export async function POST(req) {
+export async function POST(request) {
   try {
-    const body = await req.json();
-    const { nombre, celular, email, numero } = body;
+    const { nombre, celular, email, numero } = await request.json();
 
     const preference = {
       items: [
@@ -31,30 +28,25 @@ export async function POST(req) {
       },
     };
 
-    const mpRes = await fetch("https://api.mercadopago.com/checkout/preferences", {
+    const response = await fetch("https://api.mercadopago.com/checkout/preferences", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`, // Usa variables de entorno seguras
+        Authorization: `Bearer TEST-1789276759478763-070714-d7d2ab9fc332ceb133a5831a2d2b6fde-556143758`,
       },
       body: JSON.stringify(preference),
     });
 
-    const mpData = await mpRes.json();
-
-    if (!mpRes.ok) {
-      return new Response(JSON.stringify({ error: mpData }), { status: mpRes.status });
-    }
+    const mpData = await response.json();
 
     return new Response(JSON.stringify({ init_point: mpData.init_point }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-
-  } catch (err) {
-    console.error("Error en createPreference:", err);
+  } catch {
     return new Response(JSON.stringify({ error: "Error creando preferencia" }), {
       status: 500,
+      headers: { "Content-Type": "application/json" },
     });
   }
 }
