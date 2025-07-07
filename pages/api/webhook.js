@@ -19,7 +19,11 @@ export default async function handler(req, res) {
 
       const info = mpRes.data;
 
-      if (info.status === "approved") {
+      if (!info.external_reference) {
+        return res.status(400).send("Falta external_reference");
+      }
+
+      if (info.status.toLowerCase() === "approved") {
         const externalData = JSON.parse(info.external_reference);
         const numero = externalData.numero;
 
@@ -38,7 +42,7 @@ export default async function handler(req, res) {
 
       return res.status(200).send("OK");
     } catch (err) {
-      console.error("❌ Error procesando webhook:", err.response?.data || err.message);
+      console.error("❌ Error procesando webhook:", err.response?.data || err.message, req.body);
       return res.status(500).send("Error");
     }
   } else {
