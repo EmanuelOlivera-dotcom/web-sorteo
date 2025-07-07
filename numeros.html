@@ -66,6 +66,9 @@
       color: #0f0;
       margin-top: 2rem;
     }
+    #mp-button {
+      margin-top: 2rem;
+    }
   </style>
 </head>
 <body>
@@ -78,11 +81,13 @@
     <input type="tel" name="Celular" placeholder="Número de contacto" required />
     <input type="email" name="Email" placeholder="Email" required />
     <input type="hidden" name="Número" id="numeroSeleccionado" />
-    <button type="submit">Confirmar y pagar</button>
+    <button type="submit">Confirmar reserva</button>
   </form>
 
+  <div id="mp-button" style="display: none;"></div>
+
   <div class="gracias" id="mensajeGracias">
-    ✅ ¡Gracias por tu compra! Nos contactaremos pronto.
+    ✅ ¡Gracias! Ya podés completar el pago abajo 👇
   </div>
 
   <script>
@@ -132,20 +137,27 @@
         Número: form.Número.value,
       };
 
+      // Guardar datos en Google Sheets
       await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data }),
       });
 
-      // Redirigir al link de pago personalizado por número
-      const pagoURL = `https://mpago.la/${data["Número"]}`; // <-- Reemplazar por links REALES
-      window.open(pagoURL, "_blank");
-
-      // Mostrar mensaje de agradecimiento
+      // Mostrar mensaje de gracias y el botón de Mercado Pago
       form.reset();
       form.style.display = "none";
       document.getElementById("mensajeGracias").style.display = "block";
+      document.getElementById("mp-button").style.display = "block";
+
+      // Insertar botón de Mercado Pago (el tuyo)
+      const mpDiv = document.getElementById("mp-button");
+      mpDiv.innerHTML = `
+        <script src="https://www.mercadopago.com.uy/integrations/v1/web-payment-checkout.js"
+          data-preference-id="556143758-d1b44109-0817-4868-b8c7-1c6527ac5fe7"
+          data-source="button">
+        </script>
+      `;
     });
 
     cargarNumeros();
