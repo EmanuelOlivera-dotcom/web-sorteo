@@ -22,6 +22,9 @@
       gap: 10px;
       justify-content: center;
       margin-bottom: 2rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .numero {
       width: 50px;
@@ -32,6 +35,10 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .numero:hover:not(:disabled) {
+      background: #1e8449;
     }
     .numero:disabled {
       background: #555;
@@ -42,14 +49,16 @@
       flex-direction: column;
       gap: 10px;
       max-width: 400px;
-      margin: 0 auto;
-      margin-top: 2rem;
+      margin: 0 auto 2rem auto;
+      text-align: left;
     }
     input, button {
       padding: 0.8rem;
       border: none;
       border-radius: 5px;
       font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
     }
     input {
       background: #222;
@@ -59,22 +68,28 @@
       background: #27ae60;
       color: #fff;
       cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
     }
     .gracias {
       display: none;
       font-size: 1.2rem;
       color: #0f0;
-      margin-top: 2rem;
+      margin-top: 1rem;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
     }
     #mp-button {
-      margin-top: 2rem;
       display: none;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
 
   <h1>Elegí tu número</h1>
+
   <div id="numeros-container" class="numeros"></div>
 
   <form id="formulario">
@@ -85,20 +100,17 @@
     <button type="submit">Confirmar reserva</button>
   </form>
 
+  <div class="gracias" id="mensajeGracias">✅ ¡Gracias! Ya podés completar el pago abajo 👇</div>
+
   <div id="mp-button"></div>
 
-  <div class="gracias" id="mensajeGracias">
-    ✅ ¡Gracias! Ya podés completar el pago abajo 👇
-  </div>
-
   <script>
-    const API_URL = "https://sheetdb.io/api/v1/mqd28qyy5ilw2"; // Cambialo si usás otro API
+    const API_URL = "https://sheetdb.io/api/v1/mqd28qyy5ilw2";
 
-    // Función para obtener números ya vendidos
     async function obtenerNumerosVendidos() {
       const res = await fetch(API_URL);
       const data = await res.json();
-      // Suponemos que en la planilla 'Número' es texto con ceros a la izquierda
+      // Extraemos los números vendidos en formato string con ceros a la izquierda
       return data.map(e => e["Número"]);
     }
 
@@ -111,6 +123,7 @@
     async function cargarNumeros() {
       const vendidos = await obtenerNumerosVendidos();
       const numerosDiv = document.getElementById("numeros-container");
+      numerosDiv.innerHTML = "";
 
       for (let i = 1; i <= 250; i++) {
         const numStr = String(i).padStart(3, '0');
@@ -128,7 +141,6 @@
       }
     }
 
-    // Al enviar el formulario
     document.getElementById("formulario").addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -142,25 +154,31 @@
       };
 
       // Guardar datos en Google Sheets vía SheetDB
-      await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: datos }),
-      });
+      try {
+        await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: datos }),
+        });
+      } catch (error) {
+        alert("Error guardando los datos, por favor intenta nuevamente.");
+        return;
+      }
 
-      // Mostrar mensaje de gracias y botón de Mercado Pago
       form.reset();
       form.style.display = "none";
       document.getElementById("mensajeGracias").style.display = "block";
 
-      // Insertar botón de Mercado Pago con preferencia fija (ejemplo)
       const mpDiv = document.getElementById("mp-button");
-      mpDiv.innerHTML = `
-        <script src="https://www.mercadopago.com.uy/integrations/v1/web-payment-checkout.js"
-          data-preference-id="556143758-d1b44109-0817-4868-b8c7-1c6527ac5fe7"
-          data-source="button">
-        <\/script>
-      `;
+      mpDiv.innerHTML = ""; // limpiar si había algo antes
+
+      // Insertar botón Mercado Pago con preferencia fija
+      const mpScript = document.createElement("script");
+      mpScript.src = "https://www.mercadopago.com.uy/integrations/v1/web-payment-checkout.js";
+      mpScript.setAttribute("data-preference-id", "556143758-d1b44109-0817-4868-b8c7-1c6527ac5fe7");
+      mpScript.setAttribute("data-source", "button");
+      mpDiv.appendChild(mpScript);
+
       mpDiv.style.display = "block";
     });
 
