@@ -1,18 +1,20 @@
-import express from "express";
 import axios from "axios";
 
-const router = express.Router();
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).send("Method Not Allowed");
+  }
 
-router.post("/", async (req, res) => {
   const payment = req.body;
 
   if (payment?.type === "payment") {
     try {
-      // Obtener los datos del pago
-      const mpRes = await axios.get(`https://api.mercadopago.com/v1/payments/${payment.data.id}`, {
+      const paymentId = payment.data.id;
+
+      const mpRes = await axios.get(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
         headers: {
-          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`, // Tu token privado de MP
-        },
+          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`
+        }
       });
 
       const info = mpRes.data;
@@ -21,7 +23,6 @@ router.post("/", async (req, res) => {
         const externalData = JSON.parse(info.external_reference);
         const numero = externalData.numero;
 
-        // ✅ Enviar actualización a Google Sheets para marcarlo como vendido
         await axios.post("https://sheetdb.io/api/v1/mqd28qyy5ilw2", {
           data: {
             Timestamp: new Date().toISOString(),
@@ -32,17 +33,15 @@ router.post("/", async (req, res) => {
           }
         });
 
-        console.log(`✅ Pago confirmado y número ${numero} marcado como vendido.`);
+        console.log(`✅ Número ${numero} marcado como vendido.`);
       }
 
-      res.sendStatus(200);
+      return res.status(200).send("OK");
     } catch (err) {
-      console.error("❌ Error en webhook:", err.response?.data || err.message);
-      res.sendStatus(500);
+      console.error("❌ Error procesando webhook:", err.response?.data || err.message);
+      return res.status(500).send("Error");
     }
   } else {
-    res.sendStatus(200);
+    return res.status(200).send("No es un pago");
   }
-});
-
-export default router;
+}
