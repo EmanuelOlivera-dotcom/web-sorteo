@@ -1,46 +1,48 @@
-import { google } from "googleapis";
+import express from "express";
+import axios from "axios";
 
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.status(405).end();
-    return;
-  }
+const router = express.Router();
 
-  const mpTopic = req.headers["x-mercadopago-topic"];
-  const mpResource = req.headers["x-mercadopago-resource-id"];
+router.post("/", async (req, res) => {
+  const payment = req.body;
 
-  if (mpTopic !== "payment") {
-    res.status(400).end();
-    return;
-  }
+  if (payment?.type === "payment") {
+    try {
+      // Obtener los datos del pago
+      const mpRes = await axios.get(`https://api.mercadopago.com/v1/payments/${payment.data.id}`, {
+        headers: {
+          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`, // Tu token privado de MP
+        },
+      });
 
-  const accessToken = process.env.MP_ACCESS_TOKEN;
+      const info = mpRes.data;
 
-  try {
-    // Consultar detalle de pago en Mercado Pago
-    const paymentRes = await fetch(`https://api.mercadopago.com/v1/payments/${mpResource}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    const paymentData = await paymentRes.json();
+      if (info.status === "approved") {
+        const externalData = JSON.parse(info.external_reference);
+        const numero = externalData.numero;
 
-    if (paymentData.status === "approved") {
-      // Extraer metadata
-      const { metadata } = paymentData;
+        // ✅ Enviar actualización a Google Sheets para marcarlo como vendido
+        await axios.post("https://sheetdb.io/api/v1/mqd28qyy5ilw2", {
+          data: {
+            Timestamp: new Date().toISOString(),
+            Nombre: externalData.nombre,
+            Email: externalData.email,
+            Celular: externalData.celular,
+            Número: numero
+          }
+        });
 
-      // Guardar en Google Sheets
-      // Ejemplo: usar Google Sheets API para insertar fila
-      // Necesitarás configurar credenciales y client para Sheets
+        console.log(`✅ Pago confirmado y número ${numero} marcado como vendido.`);
+      }
 
-      // Aquí el código para guardar metadata (nombre, celular, email, número) en Sheets
-
-      console.log("Pago aprobado y datos guardados:", metadata);
+      res.sendStatus(200);
+    } catch (err) {
+      console.error("❌ Error en webhook:", err.response?.data || err.message);
+      res.sendStatus(500);
     }
-
-    res.status(200).end();
-  } catch (error) {
-    console.error("Error procesando webhook:", error);
-    res.status(500).end();
+  } else {
+    res.sendStatus(200);
   }
-}
+});
+
+export default router;
