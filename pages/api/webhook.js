@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
       const mpRes = await axios.get(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
         headers: {
-          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`
+          Authorization: `Bearer TEST-1789276759478763-070714-d7d2ab9fc332ceb133a5831a2d2b6fde-556143758`
         }
       });
 
