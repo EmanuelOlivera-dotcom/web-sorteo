@@ -2,134 +2,92 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sorteo Kawasaki Ninja 500</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       background: #000;
       color: #fff;
-    }
-    header {
-      background: #000;
-      color: #fff;
-      padding: 2rem 1rem;
       text-align: center;
     }
-    main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
+    header {
+      padding: 2rem 1rem;
+      background: #111;
     }
     .premios {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 2rem;
-      width: 100%;
-      max-width: 800px;
+      padding: 1rem;
+      max-width: 900px;
+      margin: auto;
     }
     .premio {
-      background: #000;
+      background: #222;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
       padding: 1rem;
-      text-align: center;
+      max-width: 280px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
     }
     .premio img {
       max-width: 100%;
-      height: auto;
       border-radius: 6px;
+      height: auto;
     }
-    .btn-comprar {
+    button.btn-comprar {
+      margin: 2rem auto;
       background: #27ae60;
-      color: #fff;
+      color: white;
       padding: 1rem 2rem;
       font-size: 1.2rem;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 2rem;
-      text-decoration: none;
-      display: inline-block;
-      text-align: center;
+      display: block;
     }
     footer {
+      background: #111;
+      padding: 2rem 1rem;
       margin-top: 4rem;
-      padding: 2rem;
-      background: #000;
-      text-align: center;
       color: #ccc;
-      width: 100%;
-    }
-    footer h3, footer p {
-      background: transparent;
-      margin: 0.5rem 0;
-    }
-    .btn-flotante {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #25d366;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-    @media (min-width: 700px) {
-      .premios {
-        flex-direction: row;
-        justify-content: center;
-      }
     }
   </style>
 </head>
 <body>
-
   <header>
     <h1>¡Participá y ganá una moto, un celular o un casco por solo 100 USD!</h1>
   </header>
 
-  <main>
-    <section class="premios">
-      <div class="premio">
-        <img src="assets/moto.png" alt="Moto Kawasaki Ninja 500" />
-        <h3>Moto Kawasaki Ninja 500</h3>
-        <p>Modelo 2025, 0 km. Valor: 10.000 USD</p>
-      </div>
-      <div class="premio">
-        <img src="assets/iphone.png" alt="iPhone 15 Pro" />
-        <h3>iPhone 15 Pro</h3>
-        <p>Nuevo, sellado. Valor: 1.500 USD</p>
-      </div>
-      <div class="premio">
-        <img src="assets/casco.png" alt="Casco HJC RPHA Negro Mate" />
-        <h3>Casco HJC RPHA Negro Mate</h3>
-        <p>Valor: 1.000 USD</p>
-      </div>
-    </section>
+  <section class="premios">
+    <div class="premio">
+      <img src="assets/moto.png" alt="Moto Kawasaki Ninja 500" />
+      <h3>Moto Kawasaki Ninja 500</h3>
+      <p>Modelo 2025, 0 km. Valor: 10.000 USD</p>
+    </div>
+    <div class="premio">
+      <img src="assets/iphone.png" alt="iPhone 15 Pro" />
+      <h3>iPhone 15 Pro</h3>
+      <p>Nuevo, sellado. Valor: 1.500 USD</p>
+    </div>
+    <div class="premio">
+      <img src="assets/casco.png" alt="Casco HJC RPHA" />
+      <h3>Casco HJC RPHA Negro Mate</h3>
+      <p>Valor: 1.000 USD</p>
+    </div>
+  </section>
 
-    <a href="numeros.html" class="btn-comprar">Comprar Ticket</a>
-  </main>
+  <button class="btn-comprar" onclick="window.location.href='numeros.html'">
+    Comprar Ticket
+  </button>
 
   <footer>
     <h3>Términos y condiciones</h3>
-    <p>[Espacio reservado para términos y condiciones. Aquí se detallará cómo se realiza el sorteo, derechos, devoluciones, reemplazos en efectivo, etc.]</p>
+    <p>
+      [Espacio reservado para términos y condiciones. Aquí se detallará cómo se realiza el sorteo, derechos, devoluciones, reemplazos en efectivo, etc.]
+    </p>
   </footer>
-
-  <a class="btn-flotante" href="https://wa.me/59895848993?text=Hola%2C%20tengo%20una%20consulta%20sobre%20el%20sorteo" target="_blank">💬</a>
-
 </body>
 </html>
