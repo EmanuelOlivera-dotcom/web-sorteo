@@ -31,38 +31,20 @@
       cursor: pointer;
       color: #000;
       min-width: 60px;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
     }
-    form {
-      max-width: 400px;
-      margin: 0 auto;
-      background: #111;
-      padding: 1.5rem;
-      border-radius: 10px;
-      display: none;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    input {
-      padding: 0.8rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-    }
-    button.submit-btn {
+    .btn-contacto {
+      margin-top: 2rem;
       background: #27ae60;
-      border: none;
-      padding: 1rem;
-      font-size: 1.1rem;
-      cursor: pointer;
-      color: #000;
+      padding: 1rem 2rem;
       border-radius: 6px;
-    }
-    #mensaje {
-      margin-top: 1rem;
+      color: #000;
+      text-decoration: none;
       font-weight: bold;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
+      display: inline-block;
     }
   </style>
 </head>
@@ -70,86 +52,40 @@
   <h1>Elegí tu número para el sorteo</h1>
 
   <div class="numeros" id="numeros-container">
-    <!-- Aquí se generan los botones con JS -->
+    <!-- Botones con JS -->
   </div>
 
-  <form id="formulario">
-    <h2>Completa tus datos para el número <span id="numero-seleccionado"></span></h2>
-    <input type="text" id="nombre" placeholder="Nombre" required />
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="text" id="celular" placeholder="Celular" required />
-    <button type="submit" class="submit-btn">Enviar y recibir instrucciones</button>
-  </form>
-
-  <div id="mensaje"></div>
+  <a
+    href="https://wa.me/59895848993?text=Hola%2C%20tengo%20una%20consulta%20sobre%20el%20sorteo"
+    target="_blank"
+    class="btn-contacto"
+  >
+    Contactar por WhatsApp
+  </a>
 
   <script>
     const numerosContainer = document.getElementById('numeros-container');
-    const formulario = document.getElementById('formulario');
-    const numeroSeleccionadoSpan = document.getElementById('numero-seleccionado');
-    const mensajeDiv = document.getElementById('mensaje');
 
-    let numeroSeleccionado = null;
+    const totalNumeros = 250;
 
-    // Generar botones para números (ejemplo del 1 al 20)
-    for (let i = 1; i <= 20; i++) {
-      const btn = document.createElement('button');
-      btn.textContent = i;
-      btn.classList.add('numero-btn');
-      btn.addEventListener('click', () => {
-        numeroSeleccionado = i;
-        numeroSeleccionadoSpan.textContent = i;
-        formulario.style.display = 'flex';
-        mensajeDiv.textContent = '';
-        window.scrollTo({ top: formulario.offsetTop - 20, behavior: 'smooth' });
-      });
-      numerosContainer.appendChild(btn);
+    // Función para poner ceros a la izquierda y que tenga 3 dígitos (001, 002,...)
+    function padNumber(num) {
+      return num.toString().padStart(3, '0');
     }
 
-    formulario.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    for (let i = 1; i <= totalNumeros; i++) {
+      const numeroConCeros = padNumber(i);
+      const numeroUrl = encodeURIComponent(numeroConCeros);
+      const whatsappLink = `https://wa.me/59895848993?text=Hola!%20Quisiera%20comprar%20el%20número%20${numeroUrl}`;
 
-      if (!numeroSeleccionado) {
-        mensajeDiv.textContent = 'Por favor, selecciona un número antes de enviar.';
-        return;
-      }
+      const a = document.createElement('a');
+      a.href = whatsappLink;
+      a.target = "_blank";
+      a.className = 'numero-btn';
+      a.textContent = numeroConCeros;
 
-      mensajeDiv.textContent = 'Enviando...';
-
-      const nombre = document.getElementById('nombre').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const celular = document.getElementById('celular').value.trim();
-
-      // Cambiá esta URL por la tuya en SheetDB o el servicio que uses
-      const sheetDbUrl = 'https://sheetdb.io/api/v1/tu_api_key';
-
-      try {
-        const res = await fetch(sheetDbUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            data: { Nombre: nombre, Email: email, Celular: celular, Número: numeroSeleccionado }
-          })
-        });
-
-        if (res.ok) {
-          mensajeDiv.innerHTML = `
-            Gracias <strong>${nombre}</strong>, tu número <strong>${numeroSeleccionado}</strong> fue registrado.<br/>
-            Para confirmar tu compra, realiza la transferencia de <strong>100 USD</strong> a:<br/>
-            <em>Banco XYZ, Cuenta 123456789, CBU 0000000000000000000000</em><br/>
-            Envía tu comprobante al WhatsApp <a href="https://wa.me/59895848993" target="_blank" style="color:#27ae60;">+598 9584 8993</a>.
-          `;
-          formulario.reset();
-          formulario.style.display = 'none';
-          numeroSeleccionado = null;
-          numeroSeleccionadoSpan.textContent = '';
-        } else {
-          mensajeDiv.textContent = 'Error al enviar los datos. Intenta de nuevo.';
-        }
-      } catch (error) {
-        mensajeDiv.textContent = 'Error en la conexión. Intenta luego.';
-      }
-    });
+      numerosContainer.appendChild(a);
+    }
   </script>
 </body>
 </html>
