@@ -36,6 +36,13 @@
       justify-content: center;
       align-items: center;
     }
+    .numero-vendido {
+      background: #555 !important;
+      color: #ccc !important;
+      cursor: not-allowed !important;
+      pointer-events: none;
+      text-decoration: none !important;
+    }
     .btn-contacto {
       margin-top: 2rem;
       background: #27ae60;
@@ -65,26 +72,39 @@
 
   <script>
     const numerosContainer = document.getElementById('numeros-container');
-
     const totalNumeros = 250;
 
-    // Función para poner ceros a la izquierda y que tenga 3 dígitos (001, 002,...)
+    // Lista de números ya vendidos, los que se deben mostrar en gris y deshabilitados
+    const numerosVendidos = [];
+    for (let n=1; n<=250; n++) {
+      numerosVendidos.push(n);
+    }
+    // Si querés que algunos estén disponibles, borralos de esta lista
+
     function padNumber(num) {
       return num.toString().padStart(3, '0');
     }
 
     for (let i = 1; i <= totalNumeros; i++) {
       const numeroConCeros = padNumber(i);
-      const numeroUrl = encodeURIComponent(numeroConCeros);
-      const whatsappLink = `https://wa.me/59895848993?text=Hola!%20Quisiera%20comprar%20el%20número%20${numeroUrl}`;
+      if (numerosVendidos.includes(i)) {
+        // Número vendido: botón gris deshabilitado
+        const span = document.createElement('span');
+        span.className = 'numero-btn numero-vendido';
+        span.textContent = numeroConCeros;
+        numerosContainer.appendChild(span);
+      } else {
+        // Número disponible: enlace whatsapp
+        const numeroUrl = encodeURIComponent(numeroConCeros);
+        const whatsappLink = `https://wa.me/59895848993?text=Hola!%20Quisiera%20comprar%20el%20número%20${numeroUrl}`;
 
-      const a = document.createElement('a');
-      a.href = whatsappLink;
-      a.target = "_blank";
-      a.className = 'numero-btn';
-      a.textContent = numeroConCeros;
-
-      numerosContainer.appendChild(a);
+        const a = document.createElement('a');
+        a.href = whatsappLink;
+        a.target = "_blank";
+        a.className = 'numero-btn';
+        a.textContent = numeroConCeros;
+        numerosContainer.appendChild(a);
+      }
     }
   </script>
 </body>
