@@ -20,14 +20,12 @@ Los números vendidos se pueden marcar manualmente en el código para deshabilit
 Botón flotante de contacto directo por WhatsApp.
 
 📁 Estructura del proyecto
-bash
-Copiar
-Editar
 /
 ├── index.html           # Página principal con premios y términos
 ├── numeros.html         # Página para elegir números
 ├── assets/              # Carpeta con imágenes (moto.png, iphone.png, casco.png)
 └── README.md            # Este archivo
+
 ⚙️ Uso y mantenimiento
 Para marcar números vendidos, editá el array numerosVendidos dentro del script en numeros.html agregando los números vendidos, por ejemplo:
 
