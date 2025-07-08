@@ -3,7 +3,7 @@ Sitio web para participar en el sorteo de una Moto Kawasaki Ninja 500, un iPhone
 Cada ticket cuesta 100 USD.
 
 🔗 Enlace al sitio
-👉 https://tusorteo.vercel.app
+👉 https://sorteo-omega.vercel.app/
 
 🎯 Características
 Sitio hecho en Next.js (App Router) con React.
