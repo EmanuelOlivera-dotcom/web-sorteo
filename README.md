@@ -1,38 +1,48 @@
 Sorteo Kawasaki Ninja 500 🏍️
-Sitio web para participar en el sorteo de una Moto Kawasaki Ninja 500, un iPhone 15 Pro o un casco HJC RPHA.
-Cada ticket cuesta 100 USD.
+Sitio web estático para participar en el sorteo de una Moto Kawasaki Ninja 500, un iPhone 15 Pro o un casco HJC RPHA. Cada ticket tiene un costo de 100 USD.
 
 🔗 Enlace al sitio
 👉 https://sorteo-omega.vercel.app/
 
-🎯 Características
-Sitio hecho en Next.js (App Router) con React.
+🎯 Características principales
+Sitio web estático en HTML, CSS y JavaScript puro.
 
-Integración con Mercado Pago para pagos online.
+Dos páginas principales:
 
-Webhook funcional que marca automáticamente el número como vendido.
+index.html: Página principal con descripción y términos y condiciones.
 
-Guardado de datos en SheetDB.
+numeros.html: Página para elegir y comprar números del sorteo vía WhatsApp.
+
+Lista de números del 001 al 250 para seleccionar.
+
+Los números vendidos se pueden marcar manualmente en el código para deshabilitarlos y mostrar en gris.
+
+Botón flotante de contacto directo por WhatsApp.
 
 📁 Estructura del proyecto
-app/
-├── page.tsx → Página principal
-├── numeros/page.tsx → Página para elegir números
-└── api/
-  ├── createPreference/route.js → Crea la preferencia de pago
-  └── webhook/route.js → Recibe notificaciones de Mercado Pago
+bash
+Copiar
+Editar
+/
+├── index.html           # Página principal con premios y términos
+├── numeros.html         # Página para elegir números
+├── assets/              # Carpeta con imágenes (moto.png, iphone.png, casco.png)
+└── README.md            # Este archivo
+⚙️ Uso y mantenimiento
+Para marcar números vendidos, editá el array numerosVendidos dentro del script en numeros.html agregando los números vendidos, por ejemplo:
 
-public/
-└── assets/ → Imágenes (moto, iphone, casco)
+js
+Copiar
+Editar
+const numerosVendidos = [1, 5, 42]; 
+Para agregar más números, modificar el rango en el script dentro de numeros.html.
 
-⚙️ Configuración
-No necesita variables de entorno (el token está hardcodeado).
+No requiere backend ni base de datos, las ventas y contacto se gestionan manualmente por WhatsApp.
 
-Los pagos van al entorno de sandbox (pruebas) de Mercado Pago.
+Las imágenes están en la carpeta assets y se usan en la página principal index.html.
 
 📞 Contacto
 Para consultas o soporte:
 📲 WhatsApp: https://wa.me/59895848993
 
-Este sitio fue creado por Emanuel para administrar su sorteo de forma profesional y automatizada 🚀
-
+Creado por Emanuel Olivera para gestionar profesionalmente su sorteo de manera sencilla y efectiva 🚀
