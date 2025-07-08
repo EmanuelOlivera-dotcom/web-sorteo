@@ -75,15 +75,18 @@
         font-size: 1rem;
         color: #bbb;
         margin-bottom: 0.5rem;
+        text-decoration: underline;
+        cursor: pointer;
       }
 
       footer p {
         font-size: 0.85rem;
         color: #aaa;
-        line-height: 1.5;
+        line-height: 1.6;
         max-width: 900px;
         margin: 0 auto;
         text-align: justify;
+        display: none;
       }
 
       .btn-flotante {
@@ -133,9 +136,9 @@
     </main>
 
     <footer>
-      <h3>Términos y condiciones</h3>
-      <p>
-        El organizador del sorteo es Gustavo Olivera, con domicilio en Camino del Cerro Eguzquiza 7, Maldonado, Uruguay. Podrán participar únicamente personas mayores de 18 años, excluyéndose familiares directos y colaboradores del organizador. Cada número cuesta 100 USD y se considera reservado solo una vez confirmado el pago. El sorteo se realizará únicamente cuando se vendan todos los números. Los premios consisten en una moto Kawasaki Ninja 500 0 km (USD 10.000), un iPhone 15 Pro nuevo (USD 1.500) y un casco HJC RPHA Negro Mate (USD 1.000), siendo todos canjeables por su valor en efectivo. El ganador será elegido en un evento presencial ante escribano público, anunciado previamente por el organizador, y registrado en nuestras redes sociales. El ganador tendrá 7 días para reclamar el premio tras el anuncio oficial. Los datos personales solo se usarán para este sorteo. El organizador puede modificar o cancelar el sorteo por causas de fuerza mayor, y participar implica aceptar todos estos términos sin reservas.
+      <h3 onclick="toggleCondiciones()">Términos y condiciones</h3>
+      <p id="condiciones">
+        El organizador y responsable del presente sorteo es Gustavo Olivera, con domicilio en Camino del Cerro Eguzquiza 7, Maldonado, 20000, Uruguay. Podrán participar todas las personas mayores de 18 años. No podrán participar familiares directos del organizador ni personas involucradas directamente en la gestión del sorteo. Para participar, los interesados deberán adquirir uno o más números del sorteo a un valor de 100 USD por número. Los números son asignados manualmente por el organizador, y la reserva se confirma exclusivamente luego de verificado el pago correspondiente. El pago se realiza mediante transferencia bancaria, y la confirmación se enviará al participante vía WhatsApp o correo electrónico. El sorteo no cuenta con una fecha límite fija. Se realizará una vez se hayan vendido todos los números disponibles. Hasta entonces, se aceptarán nuevas compras. Los premios consisten en una moto Kawasaki Ninja 500 0 km (USD 10.000), un iPhone 15 Pro nuevo (USD 1.500) y un casco HJC RPHA Negro Mate (USD 1.000). Todos los premios pueden ser canjeados por su valor en efectivo a solicitud del ganador. Los ganadores serán seleccionados en un evento presencial ante escribano público, el cual será anunciado con antelación por el organizador. El sorteo será grabado en video y publicado en nuestras redes sociales para asegurar transparencia. Los ganadores serán contactados por WhatsApp y/o correo electrónico según los datos proporcionados. En caso de que un ganador no responda dentro de un plazo de 7 días desde el anuncio, el premio podrá ser reasignado o declarado vacante. Los datos personales proporcionados por los participantes serán utilizados exclusivamente para la gestión del sorteo. No se compartirán con terceros, excepto por requerimiento legal. El organizador se reserva el derecho de modificar estas bases o cancelar el sorteo en caso de fuerza mayor o problemas técnicos, logísticos o legales que impidan su normal desarrollo, comunicando oportunamente a los participantes. El organizador no será responsable por daños, pérdidas o perjuicios relacionados con la participación en el sorteo o con el uso de los premios. Tampoco se responsabiliza por fallas técnicas, demoras en la comunicación o errores de terceros. La participación en el sorteo implica la aceptación completa y sin reservas de estos Términos y Condiciones. El incumplimiento de cualquier punto podrá dar lugar a la descalificación sin reembolso.
       </p>
     </footer>
 
@@ -146,5 +149,12 @@
     >
       💬
     </a>
+
+    <script>
+      function toggleCondiciones() {
+        const parrafo = document.getElementById("condiciones");
+        parrafo.style.display = parrafo.style.display === "none" ? "block" : "none";
+      }
+    </script>
   </body>
 </html>
